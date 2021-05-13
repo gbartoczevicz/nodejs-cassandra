@@ -1,0 +1,19 @@
+{
+  "name": "nodejs-cassandra",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/gabrielbartoczevicz/nodejs-cassandra",
+  "author": "Gabriel Bartoczevicz <gabriel.bartoczevicz@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "tsnd -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules --respawn src/server.ts"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^1.1.6",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^4.2.4"
+  },
+  "dependencies": {
+    "cassandra-driver": "^4.6.2"
+  }
+}
