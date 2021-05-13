@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  cassandra:
+    image: cassandra
+    ports:
+      - '9042:9042'
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
+          cpus: '1.0'
