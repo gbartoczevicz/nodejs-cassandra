@@ -1,11 +1,12 @@
 import { client } from '@infra/cassandra';
-import { tuples, intro } from './examples';
+import { tuples, intro, userDefinedType } from './examples';
 
 const main = async () => {
   await client.connect();
 
   await intro(client);
   await tuples(client);
+  await userDefinedType(client);
 
   await client.shutdown();
 };
