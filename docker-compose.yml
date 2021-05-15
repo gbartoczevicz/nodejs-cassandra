@@ -6,6 +6,9 @@ services:
     ports:
       - '9042:9042'
     restart: always
+    environment:
+      - CASSANDRA_DC=nosql_intro_datacenter
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
     deploy:
       resources:
         limits:
