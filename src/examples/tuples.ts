@@ -7,6 +7,8 @@ export const tuples = async (
   namespace: string,
   table: string
 ) => {
+  console.log('\n *** Executing Tuples Queries ***\n');
+
   await client.execute(`
     CREATE KEYSPACE IF NOT EXISTS ${namespace} 
     WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '3' }

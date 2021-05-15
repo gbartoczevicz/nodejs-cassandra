@@ -7,6 +7,8 @@ export const intro = async (
   namespace: string,
   table: string
 ) => {
+  console.log('\n *** Executing Intro Queries ***\n');
+
   await client.execute(`
     CREATE KEYSPACE IF NOT EXISTS ${namespace} 
     WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '3' }

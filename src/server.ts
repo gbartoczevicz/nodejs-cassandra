@@ -6,6 +6,7 @@ const udt = 'address';
 const tables = ['basic', 'tuple_forex', 'user_with_address_udt'];
 
 const main = async () => {
+  console.log('\nConnecting into Cassandra ...');
   await client.connect();
 
   await intro(client, namespace, tables[0]);
@@ -14,6 +15,8 @@ const main = async () => {
   await metadata(client, namespace, tables, udt);
 
   await client.shutdown();
+
+  console.log('\nDisconected from Cassandra');
 };
 
 main().catch((err) => {

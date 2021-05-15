@@ -6,6 +6,8 @@ export const userDefinedType = async (
   table: string,
   udt: string
 ) => {
+  console.log('\n *** Executing UDTs Queries ***\n');
+
   await client.execute(`
     CREATE KEYSPACE IF NOT EXISTS ${namespace} 
     WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1' }

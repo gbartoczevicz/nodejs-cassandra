@@ -6,6 +6,8 @@ export const metadata = async (
   tables: string[],
   udt: string
 ) => {
+  console.log('\n *** Executing Metadata Queries ***\n');
+
   const tablePromises = tables.map((table) =>
     client.metadata.getTable(namespace, table)
   );
