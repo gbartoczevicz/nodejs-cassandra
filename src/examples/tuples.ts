@@ -2,14 +2,18 @@ import { Client, types } from 'cassandra-driver';
 
 const { Tuple, TimeUuid, BigDecimal } = types;
 
-export const tuples = async (client: Client) => {
+export const tuples = async (
+  client: Client,
+  namespace: string,
+  table: string
+) => {
   await client.execute(`
-    CREATE KEYSPACE IF NOT EXISTS examples 
+    CREATE KEYSPACE IF NOT EXISTS ${namespace} 
     WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '3' }
   `);
 
   await client.execute(
-    `CREATE TABLE IF NOT EXISTS examples.tuple_forex (
+    `CREATE TABLE IF NOT EXISTS ${namespace}.${table} (
       name text, 
       time timeuuid, 
       currencies frozen<tuple<text, text>>, 
@@ -21,7 +25,7 @@ export const tuples = async (client: Client) => {
   const name = `Market ${TimeUuid.now().toString()}`;
 
   await client.execute(
-    `INSERT INTO examples.tuple_forex (name, time, currencies, value) 
+    `INSERT INTO ${namespace}.${table} (name, time, currencies, value) 
      VALUES (?, ?, ?, ?)`,
     [name, TimeUuid.now(), new Tuple('USD', 'EUR'), new BigDecimal(11, 1)],
     { prepare: true }
@@ -29,7 +33,7 @@ export const tuples = async (client: Client) => {
 
   const result = await client.execute(
     `SELECT name, time, currencies, value 
-       FROM examples.tuple_forex 
+       FROM ${namespace}.${table} 
       WHERE name = ?`,
     [name],
     { prepare: true }

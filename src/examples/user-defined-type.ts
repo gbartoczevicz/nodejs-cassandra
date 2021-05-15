@@ -1,13 +1,18 @@
 import { Client } from 'cassandra-driver';
 
-export const userDefinedType = async (client: Client) => {
+export const userDefinedType = async (
+  client: Client,
+  namespace: string,
+  table: string,
+  udt: string
+) => {
   await client.execute(`
-    CREATE KEYSPACE IF NOT EXISTS examples 
+    CREATE KEYSPACE IF NOT EXISTS ${namespace} 
     WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1' }
   `);
 
   await client.execute(
-    `CREATE TYPE IF NOT EXISTS examples.address (
+    `CREATE TYPE IF NOT EXISTS ${namespace}.${udt} (
       street text, 
       city text, 
       state text, 
@@ -17,10 +22,10 @@ export const userDefinedType = async (client: Client) => {
   );
 
   await client.execute(
-    `CREATE TABLE IF NOT EXISTS examples.user_with_address_udt (
+    `CREATE TABLE IF NOT EXISTS ${namespace}.${table} (
       name text, 
       email text, 
-      address frozen<address>,
+      address frozen<${udt}>,
       PRIMARY KEY (name)
     )`
   );
@@ -38,7 +43,7 @@ export const userDefinedType = async (client: Client) => {
   };
 
   await client.execute(
-    `INSERT INTO examples.user_with_address_udt (name, email, address) 
+    `INSERT INTO ${namespace}.${table} (name, email, address) 
      VALUES (?, ?, ?)`,
     [
       userWithAddressUDT.name,
@@ -50,7 +55,7 @@ export const userDefinedType = async (client: Client) => {
 
   const result = await client.execute(
     `SELECT name, email, address 
-       FROM examples.user_with_address_udt 
+       FROM ${namespace}.${table} 
       WHERE name = ?`,
     [userWithAddressUDT.name],
     { prepare: true }
